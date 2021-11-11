@@ -1,21 +1,17 @@
 //
-//  ContentView.swift
+//  ModeCarouselView.swift
 //  Modes V1
 //
-//  Created by Xiao Quan on 11/9/21.
+//  Created by Xiao Quan on 11/11/21.
 //
 
 import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
-        ModesCarouselView()
-    }
-}
-
-
 struct ModesCarouselView: View {
     
+    @EnvironmentObject var audioManager: AudioManager
+    @State var inputDevice: String = ""
+    @State var isPlaying = false
     @State var selectedIndex: Int = 0
     
     var body: some View {
@@ -28,7 +24,7 @@ struct ModesCarouselView: View {
                 let frame = geometry.frame(in: .global)
                 
                 TabView(selection: $selectedIndex) {
-                    ForEach (PLACEHOLDER) { mode in
+                    ForEach (modeDisplays) { mode in
                         VStack {
                             Image(systemName: mode.image)
                                 .resizable()
@@ -43,7 +39,6 @@ struct ModesCarouselView: View {
                                 .fontWeight(.bold)
                         }
                         .tag(mode.id)
-                        
                     }
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -51,35 +46,33 @@ struct ModesCarouselView: View {
             }
             .frame(height: UIScreen.main.bounds.height / 2.2)
             
-            PageControl(numPages: PLACEHOLDER.count, currentPage: getCurModeIndex())
+            PageControl(numPages: modeDisplays.count, currentPage: getCurModeIndex())
+                .padding(.bottom, 20)
+            
+            Picker("Input Device", selection: $inputDevice) {
+                ForEach(0 ..< audioManager.inputDeviceList.count) {
+                    Text(self.audioManager.inputDeviceList[$0]).tag("\($0)")
+                }
+            }
+            .padding(.bottom)
+            Button(action: {
+                self.audioManager.setCurrentMode(index: selectedIndex)
+                self.isPlaying ? self.audioManager.stop() : self.audioManager.start()
+                self.isPlaying.toggle()
+
+            }, label: {
+                Image(systemName: isPlaying ? "stop.fill" : "play.fill" )
+            })
+            .keyboardShortcut(.space, modifiers: [])
 
         }
     }
     
-    func getCurModeIndex()->Int {
-        let index = PLACEHOLDER.firstIndex { mode in
+    private func getCurModeIndex()->Int {
+        let index = modeDisplays.firstIndex { mode in
             mode.id == selectedIndex
         } ?? 0
 //        print(index)
         return index
-    }
-}
-
-
-struct Mode: Identifiable, Hashable {
-    var id: Int
-    var name: String
-    var image: String
-}
-
-var PLACEHOLDER = [
-    Mode(id: 0, name: "Up In The Clouds", image: "cloud"),
-    Mode(id: 1, name: "We Walk", image: "figure.walk")
-]
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-.previewInterfaceOrientation(.portrait)
     }
 }

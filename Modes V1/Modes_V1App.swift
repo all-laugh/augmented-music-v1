@@ -12,6 +12,7 @@ struct Modes_V1App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(AudioManager.sharedInstance)
         }
     }
 }
