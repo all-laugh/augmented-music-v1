@@ -20,6 +20,7 @@ struct ModesCarouselView: View {
                 .fontWeight(.bold)
                 .font(.largeTitle)
             
+            // Carousel Pannel
             GeometryReader { geometry in
                 let frame = geometry.frame(in: .global)
                 
@@ -30,8 +31,8 @@ struct ModesCarouselView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: frame.width - 100,
-                                       height: frame.height - 100,
-                                       alignment: .center)
+                                        height: frame.height - 100,
+                                        alignment: .center)
                                 .padding(.bottom, 20)
 
                             Text(mode.name)
@@ -44,35 +45,56 @@ struct ModesCarouselView: View {
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 
             }
-            .frame(height: UIScreen.main.bounds.height / 2.2)
+                .frame(height: UIScreen.main.bounds.height / 2.2)
             
+            // Page Control
             PageControl(numPages: modeDisplays.count, currentPage: getCurModeIndex())
                 .padding(.bottom, 20)
             
+            // Input Selection
             Picker("Input Device", selection: $inputDevice) {
                 ForEach(0 ..< audioManager.inputDeviceList.count) {
                     Text(self.audioManager.inputDeviceList[$0]).tag("\($0)")
                 }
             }
             .padding(.bottom)
-            Button(action: {
-                self.audioManager.setCurrentMode(index: selectedIndex)
-                self.isPlaying ? self.audioManager.stop() : self.audioManager.start()
-                self.isPlaying.toggle()
+            .foregroundColor(.black)
 
+            Button(action: {
+                // TODO: - How do we start and stop the filter?
+                self.isPlaying ? audioManager.stop() : audioManager.start()
+                self.isPlaying.toggle()
             }, label: {
                 Image(systemName: isPlaying ? "stop.fill" : "play.fill" )
             })
             .keyboardShortcut(.space, modifiers: [])
 
         }
+        .onChange(of: inputDevice) { _ in
+            print("inputDevice Changed")
+            let index = Int(inputDevice)
+            audioManager.switchInput(number: index)
+        }
+        .onChange(of: selectedIndex) { _ in
+            print("selected Index changed to \(selectedIndex)")
+            audioManager.stop()
+            audioManager.engine.mainMixerNode?.removeAllInputs()
+            audioManager.engine.rebuildGraph()
+            audioManager.setCurrentMode(index: selectedIndex)
+        }
+        .onAppear {
+            print("Carousel Apearred!")
+            audioManager.setCurrentMode(index: selectedIndex)
+        }
     }
+        
     
     private func getCurModeIndex()->Int {
         let index = modeDisplays.firstIndex { mode in
             mode.id == selectedIndex
         } ?? 0
 //        print(index)
+        
         return index
     }
 }
