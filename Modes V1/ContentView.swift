@@ -15,7 +15,8 @@ struct ContentView: View {
 
 
 struct ModesCarouselView: View {
-    @State var selectedTab: Mode = PLACEHOLDER[0]
+    
+    @State var selectedIndex: Int = 0
     
     var body: some View {
         VStack {
@@ -26,29 +27,41 @@ struct ModesCarouselView: View {
             GeometryReader { geometry in
                 let frame = geometry.frame(in: .global)
                 
-                TabView(selection: $selectedTab) {
+                TabView(selection: $selectedIndex) {
                     ForEach (PLACEHOLDER) { mode in
                         VStack {
                             Image(systemName: mode.image)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-//                                .padding(50)
                                 .frame(width: frame.width - 100,
                                        height: frame.height - 100,
                                        alignment: .center)
-                                .tag(mode)
                                 .padding(.bottom, 20)
-                            
+
                             Text(mode.name)
                                 .font(.body)
                                 .fontWeight(.bold)
                         }
+                        .tag(mode.id)
+                        
                     }
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                
             }
             .frame(height: UIScreen.main.bounds.height / 2.2)
+            
+            PageControl(numPages: PLACEHOLDER.count, currentPage: getCurModeIndex())
+
         }
+    }
+    
+    func getCurModeIndex()->Int {
+        let index = PLACEHOLDER.firstIndex { mode in
+            mode.id == selectedIndex
+        } ?? 0
+//        print(index)
+        return index
     }
 }
 
@@ -61,7 +74,7 @@ struct Mode: Identifiable, Hashable {
 
 var PLACEHOLDER = [
     Mode(id: 0, name: "Up In The Clouds", image: "cloud"),
-    Mode(id: 1, name: "Daily Drive", image: "figure.walk")
+    Mode(id: 1, name: "We Walk", image: "figure.walk")
 ]
 
 struct ContentView_Previews: PreviewProvider {
