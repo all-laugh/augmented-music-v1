@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import AudioKit
+import AudioKitEX
 
 class AudioManager: ObservableObject {
     
@@ -18,7 +19,7 @@ class AudioManager: ObservableObject {
     let inputDevices = Settings.session.availableInputs
     var inputDeviceList = [String]()
     
-    private var currentMode: AudioMode?
+    var currentMode: AudioMode?
     
     private init() {
         if let input = engine.input {
@@ -54,17 +55,31 @@ class AudioManager: ObservableObject {
 
     func start() {
         do { try engine.start() } catch let err { Log(err) }
+        print("Current Route", Settings.session.currentRoute)
         print("Engine Started")
     }
 
     func stop() {
         engine.stop()
+        print("Engine Stopped")
     }
     
+    // Connect mic to filter, then engine output to filter output
     func setCurrentMode(index: Int) {
+        print("Headphones plugged: ", Settings.headPhonesPlugged)
+        print("Available Outputs: ", Settings.session.currentRoute.outputs)
+//        if let input = engine.input {
+//            mic = input
+//            print("Mic set to engine.input")
+////            engine.output = Mixer(input)
+//        } else {
+//            mic = nil
+//            engine.output = Mixer()
+//            print("Mic is NIL!")
+//        }
         self.currentMode = constructAudioMode(index)
         // Connext mic to filter
-        self.currentMode!.setInput(to: Mixer(mic!))
+        self.currentMode!.setInput(to: Fader(mic!, gain: 1))
         // Activate Filter
         self.currentMode!.activate()
         // Connect engine output to filter output

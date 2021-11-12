@@ -63,6 +63,7 @@ struct ModesCarouselView: View {
             Button(action: {
                 // TODO: - How do we start and stop the filter?
                 self.isPlaying ? audioManager.stop() : audioManager.start()
+                
                 self.isPlaying.toggle()
             }, label: {
                 Image(systemName: isPlaying ? "stop.fill" : "play.fill" )
@@ -77,10 +78,33 @@ struct ModesCarouselView: View {
         }
         .onChange(of: selectedIndex) { _ in
             print("selected Index changed to \(selectedIndex)")
-            audioManager.stop()
-            audioManager.engine.mainMixerNode?.removeAllInputs()
-            audioManager.engine.rebuildGraph()
+
+            audioManager.engine.stop()
+            print("Engine stopped")
+//
+//            for node in audioManager.engine.mainMixerNode!.connections {
+//                audioManager.engine.avEngine.detach(node.avAudioNode)
+//            }
+//
+//            audioManager.engine.avEngine.detach(audioManager.engine.output!.avAudioNode)
+//            print("detached current engine output from engine")
+//
+//            audioManager.engine.mainMixerNode?.removeAllInputs()
+//            print("removed all inputs from engine main mixer node")
+//
+//            audioManager.currentMode!.input = nil
+//            print("current mode input cleared")
+//            audioManager.currentMode = nil
+//            print("Current Mode set to nil")
+//            audioManager.mic = nil
+//            print("Set mic to nil")
+//
+//            audioManager.engine.output = nil
+            
             audioManager.setCurrentMode(index: selectedIndex)
+            print("Current mode set to \(audioManager.currentMode!.name)")
+            audioManager.engine.rebuildGraph()
+            print("Rebuilt engine audio graph")
         }
         .onAppear {
             print("Carousel Apearred!")
