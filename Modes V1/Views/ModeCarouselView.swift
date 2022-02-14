@@ -10,13 +10,13 @@ import SwiftUI
 struct ModesCarouselView: View {
     
     @EnvironmentObject var audioManager: AudioManager
-    @State var inputDevice: String = ""
-    @State var isPlaying = false
-    @State var selectedIndex: Int = 0
+    @State var inputDeviceIndex: String = ""
+    @State var isRunning = false
+    @State var selectedMode: ModeNames = .clouds
     
     var body: some View {
         VStack {
-            Text("MODES")
+            Text(selectedMode.rawValue)
                 .fontWeight(.bold)
                 .font(.largeTitle)
             
@@ -24,7 +24,7 @@ struct ModesCarouselView: View {
             GeometryReader { geometry in
                 let frame = geometry.frame(in: .global)
                 
-                TabView(selection: $selectedIndex) {
+                TabView(selection: $selectedMode) {
                     ForEach (modeDisplays) { mode in
                         VStack {
                             Image(systemName: mode.image)
@@ -35,24 +35,20 @@ struct ModesCarouselView: View {
                                         alignment: .center)
                                 .padding(.bottom, 20)
 
-                            Text(mode.name)
+                            Text(mode.name.rawValue)
                                 .font(.body)
                                 .fontWeight(.bold)
                         }
-                        .tag(mode.id)
+                        .tag(mode.name)
                     }
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 
             }
-                .frame(height: UIScreen.main.bounds.height / 2.2)
-            
-            // Page Control
-            PageControl(numPages: modeDisplays.count, currentPage: getCurModeIndex())
-                .padding(.bottom, 20)
+            .frame(height: UIScreen.main.bounds.height / 2.2)
             
             // Input Selection
-            Picker("Input Device", selection: $inputDevice) {
+            Picker("Input Device", selection: $inputDeviceIndex) {
                 ForEach(0 ..< audioManager.inputDeviceList.count) {
                     Text(self.audioManager.inputDeviceList[$0]).tag("\($0)")
                 }
@@ -62,63 +58,32 @@ struct ModesCarouselView: View {
 
             Button(action: {
                 // TODO: - How do we start and stop the filter?
-                self.isPlaying ? audioManager.stop() : audioManager.start()
-                
-                self.isPlaying.toggle()
+                self.isRunning ? audioManager.stop() : audioManager.start()
+                self.isRunning.toggle()
             }, label: {
-                Image(systemName: isPlaying ? "stop.fill" : "play.fill" )
+                Image(systemName: isRunning ? "stop.fill" : "play.fill" )
+                    .resizable()
+                    .frame(width: 100, height: 100)
             })
-            .keyboardShortcut(.space, modifiers: [])
+//            .keyboardShortcut(.space, modifiers: [])
 
         }
-        .onChange(of: inputDevice) { _ in
-            print("inputDevice Changed")
-            let index = Int(inputDevice)
-            audioManager.switchInput(number: index)
+        .onChange(of: inputDeviceIndex) { _ in
+            print("=========Carousel -> inputDevice index changed to: \(inputDeviceIndex)")
+            let deviceIndex = Int(inputDeviceIndex)
+            audioManager.switchInput(number: deviceIndex)
         }
-        .onChange(of: selectedIndex) { _ in
-            print("selected Index changed to \(selectedIndex)")
-
-            audioManager.engine.stop()
+        .onChange(of: selectedMode) { _ in
+            print("=========Carousel -> selected mode changed to \(selectedMode.rawValue)")
+            audioManager.engine.pause()
             print("Engine stopped")
-//
-//            for node in audioManager.engine.mainMixerNode!.connections {
-//                audioManager.engine.avEngine.detach(node.avAudioNode)
-//            }
-//
-//            audioManager.engine.avEngine.detach(audioManager.engine.output!.avAudioNode)
-//            print("detached current engine output from engine")
-//
-//            audioManager.engine.mainMixerNode?.removeAllInputs()
-//            print("removed all inputs from engine main mixer node")
-//
-//            audioManager.currentMode!.input = nil
-//            print("current mode input cleared")
-//            audioManager.currentMode = nil
-//            print("Current Mode set to nil")
-//            audioManager.mic = nil
-//            print("Set mic to nil")
-//
-//            audioManager.engine.output = nil
-            
-            audioManager.setCurrentMode(index: selectedIndex)
+            audioManager.setCurrentMode(to: selectedMode)
             print("Current mode set to \(audioManager.currentMode!.name)")
-            audioManager.engine.rebuildGraph()
-            print("Rebuilt engine audio graph")
+//            print("Rebuilt engine audio graph")
         }
         .onAppear {
-            print("Carousel Apearred!")
-            audioManager.setCurrentMode(index: selectedIndex)
+            print("=========Carousel -> Carousel Apearred!")
+            audioManager.setCurrentMode(to: selectedMode)
         }
-    }
-        
-    
-    private func getCurModeIndex()->Int {
-        let index = modeDisplays.firstIndex { mode in
-            mode.id == selectedIndex
-        } ?? 0
-//        print(index)
-        
-        return index
     }
 }

@@ -27,7 +27,7 @@ struct CloudData {
 // MARK: - Filter Model
 
 class Cloud: AudioMode, ObservableObject {
-    var name: String = "🏔 EchoOo"
+    var name: String = "Up In The Clouds"
     var input: Node?
     var output: Node?
     var delay: Delay?

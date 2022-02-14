@@ -14,7 +14,7 @@ class AudioManager: ObservableObject {
     
     public static var sharedInstance = AudioManager()
     
-    var engine = AudioEngine()
+    var engine: AudioEngine!
     var mic: AudioEngine.InputNode?
     let inputDevices = Settings.session.availableInputs
     var inputDeviceList = [String]()
@@ -22,9 +22,14 @@ class AudioManager: ObservableObject {
     var currentMode: AudioMode?
     
     private init() {
+        prepareEngine()
+    }
+    
+    func prepareEngine() {
+        engine = AudioEngine()
+        
         if let input = engine.input {
             mic = input
-//            engine.output = Mixer(input)
         } else {
             mic = nil
             engine.output = Mixer()
@@ -54,8 +59,13 @@ class AudioManager: ObservableObject {
     }
 
     func start() {
-        do { try engine.start() } catch let err { Log(err) }
-        print("Current Route", Settings.session.currentRoute)
+        do {
+            try engine.start()
+        } catch let err {
+            Log(err)
+            
+        }
+        print("Current Route: \(Settings.session.currentRoute)")
         print("Engine Started")
     }
 
@@ -65,43 +75,40 @@ class AudioManager: ObservableObject {
     }
     
     // Connect mic to filter, then engine output to filter output
-    func setCurrentMode(index: Int) {
+    func setCurrentMode(to mode: ModeNames) {
         print("Headphones plugged: ", Settings.headPhonesPlugged)
         print("Available Outputs: ", Settings.session.currentRoute.outputs)
-//        if let input = engine.input {
-//            mic = input
-//            print("Mic set to engine.input")
-////            engine.output = Mixer(input)
-//        } else {
-//            mic = nil
-//            engine.output = Mixer()
-//            print("Mic is NIL!")
-//        }
-        self.currentMode = constructAudioMode(index)
+        if mode.rawValue == currentMode?.name { return }
+//        stop()
+        prepareEngine()
+        
+        let newMode = constructAudioMode(for: mode)
+       
         // Connext mic to filter
-        self.currentMode!.setInput(to: Fader(mic!, gain: 1))
+        newMode.setInput(to: Fader(mic!, gain: 1))
         // Activate Filter
-        self.currentMode!.activate()
+        newMode.activate()
         // Connect engine output to filter output
-        if let modeOutput = self.currentMode?.output {
+        if let modeOutput = newMode.output {
             setEngineOutput(to: modeOutput)
-            print("Engine output set to \(currentMode!.name)")
+            print("Engine output set to \(newMode.name)")
         } else {
             print("Error Constructing Audio Mode")
         }
+        self.currentMode = newMode
     }
 
-    private func constructAudioMode(_ index: Int) -> AudioMode {
-        switch index {
-        case 0:
+    private func constructAudioMode(for mode: ModeNames) -> AudioMode {
+        switch mode {
+        case .clouds:
             print("Made a Cloud mode")
             return Cloud()
-        case 1:
+        case .walk:
             print("Made a Walk mode")
             return Walk()
-        default:
-            print("Made a Cloud mode")
-            return Cloud()
+//        default:
+//            print("Made a Cloud mode")
+//            return Cloud()
         }
     }
 }

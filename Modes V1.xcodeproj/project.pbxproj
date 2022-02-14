@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		50A345CD273C6BCA00BAFC80 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345CC273C6BCA00BAFC80 /* PageControl.swift */; };
 		50A345CF273CB50400BAFC80 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345CE273CB50400BAFC80 /* AudioManager.swift */; };
 		50A345D1273CB8C300BAFC80 /* AudioModeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345D0273CB8C300BAFC80 /* AudioModeProtocol.swift */; };
 		50A345D3273CBD2400BAFC80 /* Walk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345D2273CBD2400BAFC80 /* Walk.swift */; };
@@ -25,7 +24,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		50A345CC273C6BCA00BAFC80 /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
 		50A345CE273CB50400BAFC80 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		50A345D0273CB8C300BAFC80 /* AudioModeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioModeProtocol.swift; sourceTree = "<group>"; };
 		50A345D2273CBD2400BAFC80 /* Walk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Walk.swift; sourceTree = "<group>"; };
@@ -60,8 +58,6 @@
 			children = (
 				50D6483C273AD4C800CB621E /* ContentView.swift */,
 				50A345D7273D70E500BAFC80 /* ModeCarouselView.swift */,
-				50A345CC273C6BCA00BAFC80 /* PageControl.swift */,
-				50A345DB273D714F00BAFC80 /* ModeDisplayData.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -92,6 +88,7 @@
 				50A345D0273CB8C300BAFC80 /* AudioModeProtocol.swift */,
 				50A345D2273CBD2400BAFC80 /* Walk.swift */,
 				50A345D4273CBD2700BAFC80 /* Cloud.swift */,
+				50A345DB273D714F00BAFC80 /* ModeDisplayData.swift */,
 				50D6483E273AD4C900CB621E /* Assets.xcassets */,
 				50D64840273AD4C900CB621E /* Preview Content */,
 			);
@@ -194,7 +191,6 @@
 				50A345CF273CB50400BAFC80 /* AudioManager.swift in Sources */,
 				50A345D5273CBD2700BAFC80 /* Cloud.swift in Sources */,
 				50A345D3273CBD2400BAFC80 /* Walk.swift in Sources */,
-				50A345CD273C6BCA00BAFC80 /* PageControl.swift in Sources */,
 				50A345D8273D70E500BAFC80 /* ModeCarouselView.swift in Sources */,
 				50A345DC273D714F00BAFC80 /* ModeDisplayData.swift in Sources */,
 			);

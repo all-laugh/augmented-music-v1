@@ -27,13 +27,13 @@ struct WalkData {
 // MARK: - Filter Model
 
 class Walk: AudioMode, ObservableObject {
-    var name: String = "🏔 EchoOo"
+    var name: String = "We Walk"
     var input: Node?
     var output: Node?
     var delay: Delay?
     var reverb: CostelloReverb?
     var dryWetMixer: DryWetMixer?
-    var data: CloudData = CloudData()
+    var data: WalkData = WalkData()
     var isActive = false
     
     @Published var bypass: Bool = false {
