@@ -26,19 +26,7 @@ struct ModesCarouselView: View {
                 
                 TabView(selection: $selectedMode) {
                     ForEach (modeDisplays) { mode in
-                        VStack {
-                            Image(systemName: mode.image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: frame.width - 100,
-                                        height: frame.height - 100,
-                                        alignment: .center)
-                                .padding(.bottom, 20)
-
-                            Text(mode.name.rawValue)
-                                .font(.body)
-                                .fontWeight(.bold)
-                        }
+                        makeView(for: mode, in: frame)
                         .tag(mode.name)
                     }
                 }
@@ -56,6 +44,7 @@ struct ModesCarouselView: View {
             .padding(.bottom)
             .foregroundColor(.black)
 
+            // Start/Stop
             Button(action: {
                 // TODO: - How do we start and stop the filter?
                 self.isRunning ? audioManager.stop() : audioManager.start()
@@ -65,8 +54,6 @@ struct ModesCarouselView: View {
                     .resizable()
                     .frame(width: 100, height: 100)
             })
-//            .keyboardShortcut(.space, modifiers: [])
-
         }
         .onChange(of: inputDeviceIndex) { _ in
             print("=========Carousel -> inputDevice index changed to: \(inputDeviceIndex)")

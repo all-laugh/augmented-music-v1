@@ -12,7 +12,8 @@
 		50A345D3273CBD2400BAFC80 /* Walk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345D2273CBD2400BAFC80 /* Walk.swift */; };
 		50A345D5273CBD2700BAFC80 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345D4273CBD2700BAFC80 /* Cloud.swift */; };
 		50A345D8273D70E500BAFC80 /* ModeCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345D7273D70E500BAFC80 /* ModeCarouselView.swift */; };
-		50A345DC273D714F00BAFC80 /* ModeDisplayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345DB273D714F00BAFC80 /* ModeDisplayData.swift */; };
+		50A345DC273D714F00BAFC80 /* ModeViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345DB273D714F00BAFC80 /* ModeViewData.swift */; };
+		50C7722627BA017500306ACB /* GenericModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C7722527BA017500306ACB /* GenericModeView.swift */; };
 		50D6483B273AD4C800CB621E /* Modes_V1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D6483A273AD4C800CB621E /* Modes_V1App.swift */; };
 		50D6483D273AD4C800CB621E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D6483C273AD4C800CB621E /* ContentView.swift */; };
 		50D6483F273AD4C900CB621E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50D6483E273AD4C900CB621E /* Assets.xcassets */; };
@@ -30,7 +31,8 @@
 		50A345D4273CBD2700BAFC80 /* Cloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		50A345D6273CCAC600BAFC80 /* Modes-V1-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Modes-V1-Info.plist"; sourceTree = SOURCE_ROOT; };
 		50A345D7273D70E500BAFC80 /* ModeCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeCarouselView.swift; sourceTree = "<group>"; };
-		50A345DB273D714F00BAFC80 /* ModeDisplayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeDisplayData.swift; sourceTree = "<group>"; };
+		50A345DB273D714F00BAFC80 /* ModeViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeViewData.swift; sourceTree = "<group>"; };
+		50C7722527BA017500306ACB /* GenericModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericModeView.swift; sourceTree = "<group>"; };
 		50D64837273AD4C800CB621E /* Modes V1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Modes V1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D6483A273AD4C800CB621E /* Modes_V1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modes_V1App.swift; sourceTree = "<group>"; };
 		50D6483C273AD4C800CB621E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -58,8 +60,19 @@
 			children = (
 				50D6483C273AD4C800CB621E /* ContentView.swift */,
 				50A345D7273D70E500BAFC80 /* ModeCarouselView.swift */,
+				50C7722527BA017500306ACB /* GenericModeView.swift */,
+				50A345DB273D714F00BAFC80 /* ModeViewData.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		50C7722427BA008C00306ACB /* Mode Models */ = {
+			isa = PBXGroup;
+			children = (
+				50A345D2273CBD2400BAFC80 /* Walk.swift */,
+				50A345D4273CBD2700BAFC80 /* Cloud.swift */,
+			);
+			path = "Mode Models";
 			sourceTree = "<group>";
 		};
 		50D6482E273AD4C700CB621E = {
@@ -83,12 +96,10 @@
 			children = (
 				50A345D6273CCAC600BAFC80 /* Modes-V1-Info.plist */,
 				50D6483A273AD4C800CB621E /* Modes_V1App.swift */,
-				50A345DA273D712B00BAFC80 /* Views */,
 				50A345CE273CB50400BAFC80 /* AudioManager.swift */,
+				50A345DA273D712B00BAFC80 /* Views */,
+				50C7722427BA008C00306ACB /* Mode Models */,
 				50A345D0273CB8C300BAFC80 /* AudioModeProtocol.swift */,
-				50A345D2273CBD2400BAFC80 /* Walk.swift */,
-				50A345D4273CBD2700BAFC80 /* Cloud.swift */,
-				50A345DB273D714F00BAFC80 /* ModeDisplayData.swift */,
 				50D6483E273AD4C900CB621E /* Assets.xcassets */,
 				50D64840273AD4C900CB621E /* Preview Content */,
 			);
@@ -187,12 +198,13 @@
 			files = (
 				50A345D1273CB8C300BAFC80 /* AudioModeProtocol.swift in Sources */,
 				50D6483D273AD4C800CB621E /* ContentView.swift in Sources */,
+				50C7722627BA017500306ACB /* GenericModeView.swift in Sources */,
 				50D6483B273AD4C800CB621E /* Modes_V1App.swift in Sources */,
 				50A345CF273CB50400BAFC80 /* AudioManager.swift in Sources */,
 				50A345D5273CBD2700BAFC80 /* Cloud.swift in Sources */,
 				50A345D3273CBD2400BAFC80 /* Walk.swift in Sources */,
 				50A345D8273D70E500BAFC80 /* ModeCarouselView.swift in Sources */,
-				50A345DC273D714F00BAFC80 /* ModeDisplayData.swift in Sources */,
+				50A345DC273D714F00BAFC80 /* ModeViewData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
