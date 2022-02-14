@@ -45,15 +45,15 @@ struct ModesCarouselView: View {
             .foregroundColor(.black)
 
             // Start/Stop
-            Button(action: {
-                // TODO: - How do we start and stop the filter?
-                self.isRunning ? audioManager.stop() : audioManager.start()
-                self.isRunning.toggle()
-            }, label: {
-                Image(systemName: isRunning ? "stop.fill" : "play.fill" )
-                    .resizable()
-                    .frame(width: 100, height: 100)
-            })
+//            Button(action: {
+//                // TODO: - How do we start and stop the filter?
+//                self.isRunning ? audioManager.stop() : audioManager.start()
+//                self.isRunning.toggle()
+//            }, label: {
+//                Image(systemName: isRunning ? "stop.fill" : "play.fill" )
+//                    .resizable()
+//                    .frame(width: 100, height: 100)
+//            })
         }
         .onChange(of: inputDeviceIndex) { _ in
             print("=========Carousel -> inputDevice index changed to: \(inputDeviceIndex)")
@@ -62,11 +62,8 @@ struct ModesCarouselView: View {
         }
         .onChange(of: selectedMode) { _ in
             print("=========Carousel -> selected mode changed to \(selectedMode.rawValue)")
-            audioManager.engine.pause()
-            print("Engine stopped")
             audioManager.setCurrentMode(to: selectedMode)
             print("Current mode set to \(audioManager.currentMode!.name)")
-//            print("Rebuilt engine audio graph")
         }
         .onAppear {
             print("=========Carousel -> Carousel Apearred!")

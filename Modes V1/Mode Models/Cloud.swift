@@ -14,13 +14,13 @@ import SwiftUI
 struct CloudData {
     var rampDuration: AUValue = 0.02
     // Delay
-    var delayTime: AUValue = 0.2
-    var delayFeedback: AUValue = 0.5
+    var delayTime: AUValue = 0.3
+    var delayFeedback: AUValue = 0.4
     var delayLowPassCutoff: AUValue = 5_000
-    var delayDryWetMix: AUValue = 1
+    var delayDryWetMix: AUValue = 0.6
     // Reverb
-    var reverbFeedback: AUValue = 0.7
-    var reverbLowpassCutoff: AUValue = 8_000.0
+    var reverbFeedback: AUValue = 0.90
+    var reverbLowpassCutoff: AUValue = 10_000.0
     var reverbBalance: AUValue = 1
 }
 

@@ -20,6 +20,9 @@ class AudioManager: ObservableObject {
     var inputDeviceList = [String]()
     
     var currentMode: AudioMode?
+    var currentModeName: String {
+        currentMode?.name ?? "Up In The Clouds"
+    }
     
     private init() {
         prepareEngine()
@@ -52,6 +55,9 @@ class AudioManager: ObservableObject {
                 Log(err)
             }
         }
+        prepareEngine()
+        setCurrentMode(to: .init(rawValue: currentModeName)!)
+        start()
     }
     
     private func setEngineOutput(to output: Node) {
@@ -78,16 +84,16 @@ class AudioManager: ObservableObject {
     func setCurrentMode(to mode: ModeNames) {
         print("Headphones plugged: ", Settings.headPhonesPlugged)
         print("Available Outputs: ", Settings.session.currentRoute.outputs)
-        if mode.rawValue == currentMode?.name { return }
-//        stop()
+        stop()
         prepareEngine()
-        
         let newMode = constructAudioMode(for: mode)
        
         // Connext mic to filter
         newMode.setInput(to: Fader(mic!, gain: 1))
+        
         // Activate Filter
         newMode.activate()
+        
         // Connect engine output to filter output
         if let modeOutput = newMode.output {
             setEngineOutput(to: modeOutput)
@@ -96,6 +102,7 @@ class AudioManager: ObservableObject {
             print("Error Constructing Audio Mode")
         }
         self.currentMode = newMode
+        start()
     }
 
     private func constructAudioMode(for mode: ModeNames) -> AudioMode {
