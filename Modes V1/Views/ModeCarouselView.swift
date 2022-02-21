@@ -10,64 +10,72 @@ import SwiftUI
 struct ModesCarouselView: View {
     
     @EnvironmentObject var audioManager: AudioManager
-    @State var inputDeviceIndex: String = ""
+    @State var currentInput = AudioManager.sharedInstance.inputDeviceList[0]
     @State var isRunning = false
-    @State var selectedMode: ModeNames = .clouds
+//    @State var selectedMode: ModeNames = .clouds
+    @State var currentModeDisplayData: ModeViewData = modeDisplayData[0]
     
     var body: some View {
-        VStack {
-            Text(selectedMode.rawValue)
-                .fontWeight(.bold)
-                .font(.largeTitle)
-            
-            // Carousel Pannel
-            GeometryReader { geometry in
-                let frame = geometry.frame(in: .global)
-                
-                TabView(selection: $selectedMode) {
-                    ForEach (modeDisplays) { mode in
-                        makeView(for: mode, in: frame)
-                        .tag(mode.name)
+        HStack {
+            List {
+                Section(
+                    header: Text("Audio Modes")
+                        .font(.headline)
+                        .bold()
+                        .padding()
+                ) {
+                    ForEach(modeDisplayData) { data in
+                        Button {
+                            currentModeDisplayData = data
+                        } label: {
+                            Text(data.name.rawValue)
+                        }
                     }
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 
-            }
-            .frame(height: UIScreen.main.bounds.height / 2.2)
-            
-            // Input Selection
-            Picker("Input Device", selection: $inputDeviceIndex) {
-                ForEach(0 ..< audioManager.inputDeviceList.count) {
-                    Text(self.audioManager.inputDeviceList[$0]).tag("\($0)")
+                Section(header: Text("Input Selection")) {
+                    
+                    Menu(currentInput) {
+                        ForEach(0 ..< audioManager.inputDeviceList.count) { deviceIndex in
+                            Button {
+                                audioManager.setInput(to: deviceIndex)
+                                currentInput = audioManager.inputDeviceList[deviceIndex]
+                            } label: {
+                                Text(self.audioManager.inputDeviceList[deviceIndex])
+                            }
+                        }
+                    }
                 }
             }
-            .padding(.bottom)
-            .foregroundColor(.black)
-
-            // Start/Stop
-//            Button(action: {
-//                // TODO: - How do we start and stop the filter?
-//                self.isRunning ? audioManager.stop() : audioManager.start()
-//                self.isRunning.toggle()
-//            }, label: {
-//                Image(systemName: isRunning ? "stop.fill" : "play.fill" )
-//                    .resizable()
-//                    .frame(width: 100, height: 100)
-//            })
+            .frame(width: UIScreen.main.bounds.width / 5)
+            
+            GeometryReader { geometry in
+                makeView(using: currentModeDisplayData, in: geometry.frame(in: .local) )
+            }
         }
-        .onChange(of: inputDeviceIndex) { _ in
-            print("=========Carousel -> inputDevice index changed to: \(inputDeviceIndex)")
-            let deviceIndex = Int(inputDeviceIndex)
-            audioManager.switchInput(number: deviceIndex)
-        }
-        .onChange(of: selectedMode) { _ in
-            print("=========Carousel -> selected mode changed to \(selectedMode.rawValue)")
-            audioManager.setCurrentMode(to: selectedMode)
-            print("Current mode set to \(audioManager.currentMode!.name)")
-        }
-        .onAppear {
-            print("=========Carousel -> Carousel Apearred!")
-            audioManager.setCurrentMode(to: selectedMode)
+        .foregroundColor(.primary)
+    }
+    
+    private func makeView(using modeData: ModeViewData, in frame: CGRect) -> some View {
+        print(#function)
+        print("📬 makeView for \(modeData.name)")
+        let am = AudioManager.sharedInstance
+        switch modeData.name {
+        case .walk:
+            am.setCurrentMode(to: .walk)
+            return AnyView(GenericModeView(using: modeData, in: frame))
+            
+        case .clouds:
+            am.setCurrentMode(to: .clouds)
+            return AnyView(GenericModeView(using: modeData, in: frame))
+        
+        case .duck:
+            am.setCurrentMode(to: .duck) {
+                let duckModel = am.currentMode as! Duck
+                duckModel.startTap()
+                print("Tap started")
+            }
+            return AnyView(DuckView(using: modeData, in: frame, model: am.currentMode)) 
         }
     }
 }

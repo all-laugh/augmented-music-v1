@@ -14,22 +14,15 @@ struct ModeViewData: Identifiable, Hashable {
     var image: String
 }
 
-var modeDisplays = [
-    ModeViewData(id: 0, name: .clouds, image: "cloud"),
-    ModeViewData(id: 1, name: .walk, image: "figure.walk")
-]
-
 enum ModeNames: String, CaseIterable {
     case clouds = "Up In The Clouds"
     case walk = "We Walk"
+    case duck = "Duck"
 }
 
-func makeView(for mode: ModeViewData, in frame: CGRect) -> some View {
-    switch mode.name {
-    case .walk:
-        return GenericModeView(for: mode, in: frame)
-        
-    case .clouds:
-        return GenericModeView(for: mode, in: frame)
-    }
-}
+var modeDisplayData = [
+    ModeViewData(id: 0, name: .clouds, image: "cloud"),
+    ModeViewData(id: 1, name: .walk, image: "figure.walk"),
+    ModeViewData(id: 2, name: .duck, image: "rectangle.compress.vertical")
+]
+

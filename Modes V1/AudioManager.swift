@@ -37,6 +37,7 @@ class AudioManager: ObservableObject {
             mic = nil
             engine.output = Mixer()
         }
+        
         if let existingInputs = inputDevices {
             for device in existingInputs {
                 self.inputDeviceList.append(device.portName)
@@ -44,10 +45,10 @@ class AudioManager: ObservableObject {
         }
     }
     
-    func switchInput(number: Int?) {
+    func setInput(to: Int?) {
         stop()
         if let inputs = Settings.session.availableInputs {
-            let newInput = inputs[number ?? 0]
+            let newInput = inputs[to ?? 0]
             do {
                 try Settings.session.setPreferredInput(newInput)
                 try Settings.session.setActive(true)
@@ -64,7 +65,7 @@ class AudioManager: ObservableObject {
         engine.output = output
     }
 
-    func start() {
+    func start(completion: (() -> Void)? = nil) {
         do {
             try engine.start()
         } catch let err {
@@ -73,6 +74,10 @@ class AudioManager: ObservableObject {
         }
         print("Current Route: \(Settings.session.currentRoute)")
         print("Engine Started")
+        
+        if let completion = completion {
+            completion()
+        }
     }
 
     func stop() {
@@ -81,7 +86,7 @@ class AudioManager: ObservableObject {
     }
     
     // Connect mic to filter, then engine output to filter output
-    func setCurrentMode(to mode: ModeNames) {
+    func setCurrentMode(to mode: ModeNames, completion: (() -> Void)? = nil) {
         print("Headphones plugged: ", Settings.headPhonesPlugged)
         print("Available Outputs: ", Settings.session.currentRoute.outputs)
         stop()
@@ -102,7 +107,7 @@ class AudioManager: ObservableObject {
             print("Error Constructing Audio Mode")
         }
         self.currentMode = newMode
-        start()
+        start(completion: completion)
     }
 
     private func constructAudioMode(for mode: ModeNames) -> AudioMode {
@@ -113,6 +118,10 @@ class AudioManager: ObservableObject {
         case .walk:
             print("Made a Walk mode")
             return Walk()
+            
+        case .duck:
+            print("Made a Duck mode")
+            return Duck()
 //        default:
 //            print("Made a Cloud mode")
 //            return Cloud()

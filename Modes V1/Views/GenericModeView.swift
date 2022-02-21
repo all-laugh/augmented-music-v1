@@ -12,7 +12,7 @@ struct GenericModeView: View {
     var modeViewData: ModeViewData
     let frame: CGRect
     
-    init (for modeViewData: ModeViewData, in frame: CGRect = UIScreen.main.bounds) {
+    init (using modeViewData: ModeViewData, in frame: CGRect = UIScreen.main.bounds) {
         self.modeViewData = modeViewData
         self.frame = frame
     }
@@ -37,7 +37,7 @@ struct GenericModeView: View {
 
 struct GenericModeView_Previews: PreviewProvider {
     static var previews: some View {
-        GenericModeView(for: .init(id: 0,
+        GenericModeView(using: .init(id: 0,
                                    name: .clouds,
                                    image: "cloud"))
     }
