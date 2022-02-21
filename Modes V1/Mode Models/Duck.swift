@@ -26,7 +26,7 @@ class Duck: AudioMode, ObservableObject {
     var effectParams = ReverbData()
     
     // Effect Chain on Mic
-    @Published var micGain: AUValue = 1.0 {
+    @Published var micGain: AUValue = 10.0 {
         willSet {
             micFader?.gain = newValue
         }
@@ -38,6 +38,16 @@ class Duck: AudioMode, ObservableObject {
     var audioPlayer: AudioPlayer?
     var lowpass: LowPassButterworthFilter?
     var amplitudeTap: AmplitudeTap!
+    var playheadTimer: Timer?
+    @Published var playPercentage: Double = 0.0 {
+        willSet {
+            if let player = audioPlayer {
+                currentPlayTimeText = formatTime(playPercentage * player.duration)
+            }
+        }
+    }
+    @Published var currentPlayTimeText: String = "00:00"
+    @Published var trackDuration: String?
     
     // Mixer
     var mixer = Mixer()
@@ -63,6 +73,7 @@ class Duck: AudioMode, ObservableObject {
         
         let audioFileUrl = Bundle.main.resourceURL?.appendingPathComponent("andata.mp3")
         let audioFile = try? AVAudioFile(forReading: audioFileUrl!)
+        trackDuration = formatTime(audioFile?.duration ?? 0.0)
         audioPlayer = AudioPlayer(file: audioFile!)
         lowpass = LowPassButterworthFilter(audioPlayer!, cutoffFrequency: 120)
         let silence = Fader(lowpass!, gain: 0)
@@ -84,13 +95,56 @@ class Duck: AudioMode, ObservableObject {
     }
     
     func playMusic() {
-        audioPlayer?.play()
-        isMusicPlaying = true
+        
+        if let player = audioPlayer {
+            player.play()
+            isMusicPlaying = true
+            startPlayheadUpdate()
+        }
+        
     }
     
     func stopMusic() {
+        stopPlayheadUpdate()
         audioPlayer?.stop()
         isMusicPlaying = false
+    }
+    
+    private func startPlayheadUpdate() {
+        if let player = audioPlayer {
+            playheadTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                self.playPercentage = player.getCurrentTime() / player.duration
+                self.currentPlayTimeText = self.formatTime(player.getCurrentTime())
+            }
+        }
+    }
+    
+    private func formatTime(_ time: Double) -> String {
+        
+        let time = Int(time)
+        
+        let minutes = time / 60
+        let seconds = time % 60
+        
+        return String(format: "%02i:%02i", minutes, seconds)
+    }
+    
+    private func stopPlayheadUpdate() {
+        playheadTimer?.invalidate()
+    }
+    
+    func updatePlayhead(_ isUpdating: Bool) {
+        
+        if let player = audioPlayer {
+            let targetTime = player.duration * playPercentage
+            player.seek(time: targetTime)
+        }
+        
+        if isUpdating {
+            stopPlayheadUpdate()
+        } else {
+            startPlayheadUpdate()
+        }
     }
     
     func handler(amplitude: Float) {
@@ -102,9 +156,10 @@ class Duck: AudioMode, ObservableObject {
          */
         
 //        let currentMicGain = micGain
+//        let maxAttenuation = micGain * 0.5
+//        
+//        
         
-        
-
     }
     
     func startTap() {

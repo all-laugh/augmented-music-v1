@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct DuckView: View {
-    
     var modeViewData: ModeViewData
     let frame: CGRect
     @ObservedObject var duckModel: Duck
+    @State var musicProgressWidth : CGFloat = 0
     
     init (using modeViewData: ModeViewData, in frame: CGRect = UIScreen.main.bounds, model: AudioMode? = nil) {
         self.modeViewData = modeViewData
@@ -46,9 +46,23 @@ struct DuckView: View {
             Text("When music is playing, your environment will \"duck\" to the beats")
                 .padding()
             
-            Slider(value: $duckModel.micGain, in: 0...15)
+            HStack {
+                Text("Mic Volume: ")
+                
+                Slider(value: $duckModel.micGain, in: 0...20)
+                    .padding()
+            }
+            
+            HStack {
+                Text(duckModel.currentPlayTimeText)
+                
+                Slider(value: $duckModel.playPercentage, in: 0.0...1.0) { isUpdating in
+                    duckModel.updatePlayhead(isUpdating)
+                }
                 .padding()
-    
+                
+                Text(duckModel.trackDuration ?? "")
+            }
         }
     }
 }
