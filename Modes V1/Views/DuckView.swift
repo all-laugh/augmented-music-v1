@@ -24,10 +24,10 @@ struct DuckView: View {
             Image(systemName: modeViewData.image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: frame.width - 100,
-                        height: frame.height - 100,
+                .frame(width: frame.width / 3,
+                        height: frame.height / 3,
                         alignment: .center)
-                .padding(.bottom, 20)
+                .padding(20)
 
             Text(modeViewData.name.rawValue)
                 .font(.body)
@@ -40,10 +40,15 @@ struct DuckView: View {
                 Image(systemName: duckModel.isMusicPlaying ? "stop.circle" : "play.circle")
                     .resizable()
                     .frame(width: 50, height: 50)
-                
             }
+            .padding()
             
             Text("When music is playing, your environment will \"duck\" to the beats")
+                .padding()
+            
+            Slider(value: $duckModel.micGain, in: 0...15)
+                .padding()
+    
         }
     }
 }

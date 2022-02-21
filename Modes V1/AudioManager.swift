@@ -45,15 +45,16 @@ class AudioManager: ObservableObject {
         }
     }
     
-    func setInput(to: Int?) {
+    func setInput(to index: Int?) {
         stop()
         if let inputs = Settings.session.availableInputs {
-            let newInput = inputs[to ?? 0]
+            let newInput = inputs[index ?? 0]
             do {
                 try Settings.session.setPreferredInput(newInput)
+
                 try Settings.session.setActive(true)
             } catch let err {
-                Log(err)
+                Log("Error setting input device: ", err)
             }
         }
         prepareEngine()

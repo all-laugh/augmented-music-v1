@@ -10,34 +10,7 @@ import AudioKit
 import AudioKitEX
 import SoundpipeAudioKit
 import AVFAudio
-
-/*
- Test side chain compressor.
- 
- The input comes from the music, after being lowpassed at 120Hz.
- 
- This will be done via an amplitude tap on the lowpass filter node.
- 
- Within the amplitude tap callback:
-    - We need the the environmental sound to behave, such that, the higher the amplitude we get
-    here, the lower the volume needs to be, with the reaction/fade time adjustable, for the time
-    being.
-    - This means that we'll need to know the range for both levels. How much does drums typically
-    sound like after being lowpassed. And how much attenuation we need to have a good ducking effect?
- 
-    - Don't need to worry about the 'tail' time for now.
- 
- Not sure if this will fuck up the threading. But,
- we can set a variable that keeps track of the current amplitude, put a didSet on it and update the
- volume coming out of the reverb attached to the mics. This should work.
- 
- Once we activate the filter and started the engine in the audio manager,
- 
- // TODO: - Add a completion closure to the function in AudioManager that starts the filter/engine.
- 
- This gives us the option to start the tap after the engine is started.
-    
- */
+import SwiftUI
 
 class Duck: AudioMode, ObservableObject {
 
@@ -50,8 +23,15 @@ class Duck: AudioMode, ObservableObject {
         }
     }
     var isActive: Bool = false
+    var effectParams = ReverbData()
     
     // Effect Chain on Mic
+    @Published var micGain: AUValue = 1.0 {
+        willSet {
+            micFader?.gain = newValue
+        }
+    }
+    var micFader: Fader?
     var reverb: CostelloReverb?
     
     // Player Chain on Music
@@ -65,6 +45,9 @@ class Duck: AudioMode, ObservableObject {
     // Controls
     @Published var isMusicPlaying = false
     
+    
+    // MARK: - Mode Controls
+    
     func playButtonPressed() {
         isMusicPlaying ? stopMusic() : playMusic()
     }
@@ -75,7 +58,8 @@ class Duck: AudioMode, ObservableObject {
     
     func activate() {
         if input == nil { return }
-        reverb = CostelloReverb(self.input!)
+        micFader = Fader(input!, gain: micGain)
+        reverb = CostelloReverb(micFader!)
         
         let audioFileUrl = Bundle.main.resourceURL?.appendingPathComponent("andata.mp3")
         let audioFile = try? AVAudioFile(forReading: audioFileUrl!)
@@ -94,6 +78,7 @@ class Duck: AudioMode, ObservableObject {
                                     analysisMode: .peak,
                                     handler: self.handler)
         
+        setData()
         isActive = true
         
     }
@@ -109,7 +94,17 @@ class Duck: AudioMode, ObservableObject {
     }
     
     func handler(amplitude: Float) {
-        print(amplitude)
+        
+        /*
+         .90 seems to be a baseline for kicks.
+         
+         we want to use this to ramp the micFader
+         */
+        
+//        let currentMicGain = micGain
+        
+        
+
     }
     
     func startTap() {
@@ -129,5 +124,19 @@ class Duck: AudioMode, ObservableObject {
         isActive = false
     }
     
+    private func setData() {
+        reverb!.$feedback.ramp(to: effectParams.reverbFeedback, duration: effectParams.rampDuration)
+        reverb!.$cutoffFrequency.ramp(to: effectParams.reverbLowpassCutoff, duration: effectParams.rampDuration)
+//        reverb!.$balance.ramp(to: effectParams.reverbBalance, duration: effectParams.rampDuration)
+    }
     
+
+}
+
+
+struct ReverbData {
+    var rampDuration: AUValue = 0.02
+    // Reverb
+    var reverbFeedback: AUValue = 0.95
+    var reverbLowpassCutoff: AUValue = 10_000.0
 }

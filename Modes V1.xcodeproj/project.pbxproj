@@ -10,6 +10,7 @@
 		5077CCF227C1F4AD00FC250B /* Duck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077CCF127C1F4AD00FC250B /* Duck.swift */; };
 		5077CCF527C2B18000FC250B /* andata.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5077CCF427C2B18000FC250B /* andata.mp3 */; };
 		5077CCF727C2BF8E00FC250B /* DuckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077CCF627C2BF8E00FC250B /* DuckView.swift */; };
+		5077CCF927C4145C00FC250B /* CenterInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077CCF827C4145C00FC250B /* CenterInView.swift */; };
 		50A345CF273CB50400BAFC80 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345CE273CB50400BAFC80 /* AudioManager.swift */; };
 		50A345D1273CB8C300BAFC80 /* AudioModeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345D0273CB8C300BAFC80 /* AudioModeProtocol.swift */; };
 		50A345D3273CBD2400BAFC80 /* Walk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345D2273CBD2400BAFC80 /* Walk.swift */; };
@@ -31,6 +32,7 @@
 		5077CCF127C1F4AD00FC250B /* Duck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Duck.swift; sourceTree = "<group>"; };
 		5077CCF427C2B18000FC250B /* andata.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = andata.mp3; sourceTree = "<group>"; };
 		5077CCF627C2BF8E00FC250B /* DuckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckView.swift; sourceTree = "<group>"; };
+		5077CCF827C4145C00FC250B /* CenterInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterInView.swift; sourceTree = "<group>"; };
 		50A345CE273CB50400BAFC80 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		50A345D0273CB8C300BAFC80 /* AudioModeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioModeProtocol.swift; sourceTree = "<group>"; };
 		50A345D2273CBD2400BAFC80 /* Walk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Walk.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			children = (
 				50D6483C273AD4C800CB621E /* ContentView.swift */,
 				50A345D7273D70E500BAFC80 /* ModeCarouselView.swift */,
+				5077CCF827C4145C00FC250B /* CenterInView.swift */,
 				50C7722527BA017500306ACB /* GenericModeView.swift */,
 				5077CCF627C2BF8E00FC250B /* DuckView.swift */,
 				50A345DB273D714F00BAFC80 /* ModeViewData.swift */,
@@ -222,6 +225,7 @@
 				50A345D5273CBD2700BAFC80 /* Cloud.swift in Sources */,
 				50A345D3273CBD2400BAFC80 /* Walk.swift in Sources */,
 				50A345D8273D70E500BAFC80 /* ModeCarouselView.swift in Sources */,
+				5077CCF927C4145C00FC250B /* CenterInView.swift in Sources */,
 				50A345DC273D714F00BAFC80 /* ModeViewData.swift in Sources */,
 				5077CCF727C2BF8E00FC250B /* DuckView.swift in Sources */,
 				5077CCF227C1F4AD00FC250B /* Duck.swift in Sources */,

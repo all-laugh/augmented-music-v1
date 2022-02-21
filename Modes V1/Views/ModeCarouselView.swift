@@ -10,7 +10,7 @@ import SwiftUI
 struct ModesCarouselView: View {
     
     @EnvironmentObject var audioManager: AudioManager
-    @State var currentInput = AudioManager.sharedInstance.inputDeviceList[0]
+    @State var currentInput = AudioManager.sharedInstance.engine.inputDevice?.name ?? ""
     @State var isRunning = false
 //    @State var selectedMode: ModeNames = .clouds
     @State var currentModeDisplayData: ModeViewData = modeDisplayData[0]
@@ -50,7 +50,10 @@ struct ModesCarouselView: View {
             .frame(width: UIScreen.main.bounds.width / 5)
             
             GeometryReader { geometry in
+                
                 makeView(using: currentModeDisplayData, in: geometry.frame(in: .local) )
+                    .centerInCurrentView()
+                    
             }
         }
         .foregroundColor(.primary)

@@ -22,10 +22,10 @@ struct GenericModeView: View {
             Image(systemName: modeViewData.image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: frame.width - 100,
-                        height: frame.height - 100,
+                .frame(width: frame.width / 3,
+                        height: frame.height / 3,
                         alignment: .center)
-                .padding(.bottom, 20)
+                .padding(20)
 
             Text(modeViewData.name.rawValue)
                 .font(.body)
