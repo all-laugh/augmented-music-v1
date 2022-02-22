@@ -68,8 +68,9 @@ class Duck: AudioMode, ObservableObject {
     
     func activate() {
         if input == nil { return }
-        micFader = Fader(input!, gain: micGain)
-        reverb = CostelloReverb(micFader!)
+        reverb = CostelloReverb(input!)
+        micFader = Fader(reverb!, gain: micGain)
+        
         
         let audioFileUrl = Bundle.main.resourceURL?.appendingPathComponent("andata.mp3")
         let audioFile = try? AVAudioFile(forReading: audioFileUrl!)
@@ -79,7 +80,7 @@ class Duck: AudioMode, ObservableObject {
         let silence = Fader(lowpass!, gain: 0)
         
         mixer.addInput(audioPlayer!)
-        mixer.addInput(reverb!)
+        mixer.addInput(micFader!)
         mixer.addInput(silence)
         output = mixer
         
@@ -147,6 +148,13 @@ class Duck: AudioMode, ObservableObject {
         }
     }
     
+    
+    var micGainDefault: Float = 12.0
+    var lastAmplitude: Float = 0.0
+    let threshold: Float = 0.2
+    let conversionRatio: Float = 8 / 0.7
+    let maxAttenuation: Float = 8
+    
     func handler(amplitude: Float) {
         
         /*
@@ -155,11 +163,28 @@ class Duck: AudioMode, ObservableObject {
          we want to use this to ramp the micFader
          */
         
-//        let currentMicGain = micGain
-//        let maxAttenuation = micGain * 0.5
-//        
-//        
+        if !audioPlayer!.isPlaying { return }
         
+        let conversionRatio: Float = maxAttenuation / (0.9 - threshold)
+         
+        if amplitude > threshold {
+            
+            if amplitude < lastAmplitude {
+                micGain += 0.5
+            } else {
+                let gainReduction = (amplitude - threshold) * conversionRatio
+                
+                if gainReduction > 3.0 {
+                    micGain -= 3.0
+                } else {
+                    micGain = micGainDefault - gainReduction
+                }
+            }
+        } else {
+            micGain = micGainDefault
+        }
+        
+        lastAmplitude = amplitude
     }
     
     func startTap() {
