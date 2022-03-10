@@ -18,6 +18,7 @@
 		50A345D8273D70E500BAFC80 /* ModeCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345D7273D70E500BAFC80 /* ModeCarouselView.swift */; };
 		50A345DC273D714F00BAFC80 /* ModeViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A345DB273D714F00BAFC80 /* ModeViewData.swift */; };
 		50C7722627BA017500306ACB /* GenericModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C7722527BA017500306ACB /* GenericModeView.swift */; };
+		50D40F5427D99FD100ECA372 /* PitchCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D40F5327D99FD100ECA372 /* PitchCross.swift */; };
 		50D6483B273AD4C800CB621E /* Modes_V1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D6483A273AD4C800CB621E /* Modes_V1App.swift */; };
 		50D6483D273AD4C800CB621E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D6483C273AD4C800CB621E /* ContentView.swift */; };
 		50D6483F273AD4C900CB621E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50D6483E273AD4C900CB621E /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 		50A345D7273D70E500BAFC80 /* ModeCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeCarouselView.swift; sourceTree = "<group>"; };
 		50A345DB273D714F00BAFC80 /* ModeViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeViewData.swift; sourceTree = "<group>"; };
 		50C7722527BA017500306ACB /* GenericModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericModeView.swift; sourceTree = "<group>"; };
+		50D40F5327D99FD100ECA372 /* PitchCross.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PitchCross.swift; sourceTree = "<group>"; };
 		50D64837273AD4C800CB621E /* Modes V1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Modes V1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D6483A273AD4C800CB621E /* Modes_V1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modes_V1App.swift; sourceTree = "<group>"; };
 		50D6483C273AD4C800CB621E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,10 +78,10 @@
 			children = (
 				50D6483C273AD4C800CB621E /* ContentView.swift */,
 				50A345D7273D70E500BAFC80 /* ModeCarouselView.swift */,
-				5077CCF827C4145C00FC250B /* CenterInView.swift */,
 				50C7722527BA017500306ACB /* GenericModeView.swift */,
 				5077CCF627C2BF8E00FC250B /* DuckView.swift */,
 				50A345DB273D714F00BAFC80 /* ModeViewData.swift */,
+				5077CCF827C4145C00FC250B /* CenterInView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -89,6 +91,7 @@
 			children = (
 				50A345D2273CBD2400BAFC80 /* Walk.swift */,
 				50A345D4273CBD2700BAFC80 /* Cloud.swift */,
+				50D40F5327D99FD100ECA372 /* PitchCross.swift */,
 				5077CCF127C1F4AD00FC250B /* Duck.swift */,
 			);
 			path = "Mode Models";
@@ -226,6 +229,7 @@
 				50A345D3273CBD2400BAFC80 /* Walk.swift in Sources */,
 				50A345D8273D70E500BAFC80 /* ModeCarouselView.swift in Sources */,
 				5077CCF927C4145C00FC250B /* CenterInView.swift in Sources */,
+				50D40F5427D99FD100ECA372 /* PitchCross.swift in Sources */,
 				50A345DC273D714F00BAFC80 /* ModeViewData.swift in Sources */,
 				5077CCF727C2BF8E00FC250B /* DuckView.swift in Sources */,
 				5077CCF227C1F4AD00FC250B /* Duck.swift in Sources */,

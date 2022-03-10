@@ -26,11 +26,6 @@ class Duck: AudioMode, ObservableObject {
     var effectParams = ReverbData()
     
     // Effect Chain on Mic
-    @Published var micGain: AUValue = 10.0 {
-        willSet {
-            micFader?.gain = newValue
-        }
-    }
     var micFader: Fader?
     var reverb: CostelloReverb?
     
@@ -149,19 +144,26 @@ class Duck: AudioMode, ObservableObject {
     }
     
     
-    var micGainDefault: Float = 12.0
+//    var micGainDefault: Float = 12.0
+    let maxAttenuationPercentage: Float = 0.5
     var lastAmplitude: Float = 0.0
     let threshold: Float = 0.2
     let conversionRatio: Float = 8 / 0.7
-    let maxAttenuation: Float = 8
+    @Published var micGain: AUValue = 1.0 {
+        willSet {
+            micFader?.gain = newValue
+        }
+    }
+    @Published var defaultGainWhenActive: AUValue = 1.0
     
     func handler(amplitude: Float) {
-        
         /*
          .90 seems to be a baseline for kicks.
          
          we want to use this to ramp the micFader
          */
+        let maxAttenuation = maxAttenuationPercentage * defaultGainWhenActive
+        let minGain = defaultGainWhenActive - maxAttenuation
         
         if !audioPlayer!.isPlaying { return }
         
@@ -176,12 +178,17 @@ class Duck: AudioMode, ObservableObject {
                 
                 if gainReduction > 3.0 {
                     micGain -= 3.0
+                    
                 } else {
-                    micGain = micGainDefault - gainReduction
+                    micGain = defaultGainWhenActive - gainReduction
+                }
+                
+                if micGain < minGain {
+                    micGain = minGain
                 }
             }
         } else {
-            micGain = micGainDefault
+            micGain = defaultGainWhenActive
         }
         
         lastAmplitude = amplitude

@@ -44,18 +44,19 @@ struct DuckView: View {
             .padding()
             
             Text("When music is playing, your environment will \"duck\" to the beats")
+                .foregroundColor(.gray)
                 .padding()
             
             HStack {
                 Text("Mic Volume: ")
-                
-                Slider(value: $duckModel.micGain, in: 0...20)
+                    .foregroundColor(.gray)
+                Slider(value: duckModel.isMusicPlaying ? $duckModel.defaultGainWhenActive : $duckModel.micGain, in: 0...2.0)
                     .padding()
             }
             
             HStack {
                 Text(duckModel.currentPlayTimeText)
-                
+                    
                 Slider(value: $duckModel.playPercentage, in: 0.0...1.0) { isUpdating in
                     duckModel.updatePlayhead(isUpdating)
                 }
@@ -63,6 +64,7 @@ struct DuckView: View {
                 
                 Text(duckModel.trackDuration ?? "")
             }
+            .foregroundColor(.gray)
         }
     }
 }

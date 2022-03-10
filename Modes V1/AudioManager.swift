@@ -16,12 +16,19 @@ class AudioManager: ObservableObject {
     
     var engine: AudioEngine!
     var mic: AudioEngine.InputNode?
+    var micFader: Fader?
     let inputDevices = Settings.session.availableInputs
     var inputDeviceList = [String]()
     
     var currentMode: AudioMode?
     var currentModeName: String {
         currentMode?.name ?? "Up In The Clouds"
+    }
+    
+    var micGain: AUValue = 10.0 {
+        willSet {
+            micFader?.gain = newValue
+        }
     }
     
     private init() {
@@ -33,6 +40,7 @@ class AudioManager: ObservableObject {
         
         if let input = engine.input {
             mic = input
+            micFader = Fader(mic!, gain: micGain)
         } else {
             mic = nil
             engine.output = Mixer()
@@ -95,7 +103,7 @@ class AudioManager: ObservableObject {
         let newMode = constructAudioMode(for: mode)
        
         // Connext mic to filter
-        newMode.setInput(to: Fader(mic!, gain: 1))
+        newMode.setInput(to: micFader!)
         
         // Activate Filter
         newMode.activate()
@@ -119,6 +127,10 @@ class AudioManager: ObservableObject {
         case .walk:
             print("Made a Walk mode")
             return Walk()
+            
+        case .pitchCross:
+            print("Made a Pitch Cross Mode")
+            return PitchCross()
             
         case .duck:
             print("Made a Duck mode")

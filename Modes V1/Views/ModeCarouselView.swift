@@ -46,8 +46,14 @@ struct ModesCarouselView: View {
                         }
                     }
                 }
+                
+                Section(header: Text("Mic Volume: ")
+                            .foregroundColor(.gray)) {
+                    Slider(value: $audioManager.micGain, in: 0...20)
+                        .padding()
+                }
             }
-            .frame(width: UIScreen.main.bounds.width / 5)
+            .frame(width: UIScreen.main.bounds.width / 4)
             
             GeometryReader { geometry in
                 
@@ -70,6 +76,10 @@ struct ModesCarouselView: View {
             
         case .clouds:
             am.setCurrentMode(to: .clouds)
+            return AnyView(GenericModeView(using: modeData, in: frame))
+            
+        case .pitchCross:
+            am.setCurrentMode(to: .pitchCross)
             return AnyView(GenericModeView(using: modeData, in: frame))
         
         case .duck:
