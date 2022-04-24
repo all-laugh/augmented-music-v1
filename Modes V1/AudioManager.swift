@@ -124,9 +124,9 @@ class AudioManager: ObservableObject {
         case .clouds:
             print("Made a Cloud mode")
             return Cloud()
-        case .walk:
-            print("Made a Walk mode")
-            return Walk()
+//        case .walk:
+//            print("Made a Walk mode")
+//            return Walk()
             
         case .pitchCross:
             print("Made a Pitch Cross Mode")

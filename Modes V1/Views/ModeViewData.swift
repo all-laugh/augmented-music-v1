@@ -16,14 +16,14 @@ struct ModeViewData: Identifiable, Hashable {
 
 enum ModeNames: String, CaseIterable {
     case clouds = "Up In The Clouds"
-    case walk = "We Walk"
+//    case walk = "We Walk"
     case pitchCross = "Pitch Cross"
     case duck = "Duck"
 }
 
 var modeDisplayData = [
     ModeViewData(id: 0, name: .clouds, image: "cloud"),
-    ModeViewData(id: 1, name: .walk, image: "figure.walk"),
+//    ModeViewData(id: 1, name: .walk, image: "figure.walk"),
     ModeViewData(id: 2, name: .pitchCross, image: "arrow.up.arrow.down"),
     ModeViewData(id: 3, name: .duck, image: "rectangle.compress.vertical")
 ]

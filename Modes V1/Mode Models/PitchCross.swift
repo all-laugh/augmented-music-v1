@@ -20,7 +20,7 @@ class PitchCross: AudioMode, ObservableObject {
     var lowPass: LowPassButterworthFilter!
     var pitchUp: PitchShifter!
     var pitchDown: PitchShifter!
-//    var reverb: CostelloReverb!
+    var reverb: CostelloReverb!
     var outputMixer: Mixer!
     
     
@@ -44,18 +44,18 @@ class PitchCross: AudioMode, ObservableObject {
         
         outputMixer = Mixer([pitchUp, pitchDown])
         
-//        reverb = CostelloReverb(outputMixer,
-//                                feedback: 0.1,
-//                                cutoffFrequency: 10_000)
+        reverb = CostelloReverb(outputMixer,
+                                feedback: 0.2,
+                                cutoffFrequency: 10_000)
         
-        self.output = outputMixer
+        self.output = reverb
         
         isActive = true
     }
     
     func deactivate() {
         output = nil
-//        reverb = nil
+        reverb = nil
         pitchUp = nil
         pitchDown = nil
         lowPass = nil

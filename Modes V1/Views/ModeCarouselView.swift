@@ -70,9 +70,9 @@ struct ModesCarouselView: View {
         print("📬 makeView for \(modeData.name)")
         let am = AudioManager.sharedInstance
         switch modeData.name {
-        case .walk:
-            am.setCurrentMode(to: .walk)
-            return AnyView(GenericModeView(using: modeData, in: frame))
+//        case .walk:
+//            am.setCurrentMode(to: .walk)
+//            return AnyView(GenericModeView(using: modeData, in: frame))
             
         case .clouds:
             am.setCurrentMode(to: .clouds)

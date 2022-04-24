@@ -14,14 +14,14 @@ import SwiftUI
 struct CloudData {
     var rampDuration: AUValue = 0.02
     // Delay
-    var delayTime: AUValue = 0.3
+    var delayTime: AUValue = 0.8
     var delayFeedback: AUValue = 0.2
     var delayLowPassCutoff: AUValue = 5_000
-    var delayDryWetMix: AUValue = 0.6
+    var delayDryWetMix: AUValue = 0.2
     // Reverb
     var reverbFeedback: AUValue = 0.90
     var reverbLowpassCutoff: AUValue = 10_000.0
-    var reverbBalance: AUValue = 1
+    var reverbBalance: AUValue = 0.9
 }
 
 // MARK: - Filter Model
@@ -73,7 +73,7 @@ class Cloud: AudioMode, ObservableObject {
         delay!.$time.ramp(to: data.delayTime, duration: data.rampDuration)
         delay!.$feedback.ramp(to: data.delayFeedback, duration: data.rampDuration)
         delay!.$lowPassCutoff.ramp(to: data.delayLowPassCutoff, duration: data.rampDuration)
-        delay!.$dryWetMix.ramp(to: data.rampDuration, duration: data.rampDuration)
+        delay!.$dryWetMix.ramp(to: data.delayDryWetMix, duration: data.rampDuration)
         reverb!.$feedback.ramp(to: data.reverbFeedback, duration: data.rampDuration)
         reverb!.$cutoffFrequency.ramp(to: data.reverbLowpassCutoff, duration: data.rampDuration)
         dryWetMixer!.balance = data.reverbBalance
